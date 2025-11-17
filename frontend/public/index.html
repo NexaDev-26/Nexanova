@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#14b8a6" />
+    <meta name="description" content="NexaNova - Heal. Grow. Rise. Your private AI space to transform your mind, habits, and finances" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>NexaNova - Heal. Grow. Rise.</title>
+    <script>
+      // CRITICAL: Immediately unregister ALL service workers in development
+      // This runs BEFORE React loads to prevent service worker from blocking bundle.js
+      (function() {
+        'use strict';
+        var isDev = window.location.hostname === 'localhost' || 
+                   window.location.hostname === '127.0.0.1' ||
+                   window.location.hostname === '';
+        
+        if (isDev && 'serviceWorker' in navigator) {
+          // Force unregister ALL service workers immediately
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            if (registrations.length > 0) {
+              console.log('🔧 Development mode: Unregistering', registrations.length, 'service worker(s)');
+              registrations.forEach(function(registration) {
+                registration.unregister().then(function(success) {
+                  if (success) {
+                    console.log('✅ Service worker unregistered successfully');
+                  } else {
+                    console.warn('⚠️ Service worker unregistration returned false');
+                  }
+                }).catch(function(error) {
+                  console.error('❌ Error unregistering service worker:', error);
+                });
+              });
+              
+              // Also try to unregister by scope
+              navigator.serviceWorker.getRegistration().then(function(registration) {
+                if (registration) {
+                  registration.unregister();
+                }
+              });
+            }
+          }).catch(function(error) {
+            console.error('❌ Error getting service worker registrations:', error);
+          });
+          
+          // Clear ALL caches immediately
+          if ('caches' in window) {
+            caches.keys().then(function(cacheNames) {
+              cacheNames.forEach(function(cacheName) {
+                caches.delete(cacheName).then(function(success) {
+                  if (success) {
+                    console.log('🗑️ Cache deleted:', cacheName);
+                  }
+                });
+              });
+            }).catch(function(error) {
+              console.error('❌ Error clearing caches:', error);
+            });
+          }
+          
+          // Block ANY future service worker registration in development
+          Object.defineProperty(navigator.serviceWorker, 'register', {
+            value: function() {
+              console.warn('🚫 Service worker registration blocked in development mode');
+              return Promise.reject(new Error('Service workers are disabled in development'));
+            },
+            writable: false,
+            configurable: false
+          });
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+

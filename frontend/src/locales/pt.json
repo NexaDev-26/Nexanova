@@ -1,0 +1,68 @@
+{
+  "dashboard": {
+    "greeting": {
+      "goodMorning": "Bom dia",
+      "goodAfternoon": "Boa tarde",
+      "goodEvening": "Boa noite",
+      "friend": "Amigo"
+    },
+    "quote": "Cada passo à frente conta.",
+    "mood": {
+      "title": "Como você está se sentindo hoje?",
+      "label": "Humor",
+      "feeling": "Sentimento"
+    },
+    "progress": {
+      "title": "Seu Progresso",
+      "mindBalance": "Equilíbrio Mental",
+      "habitConsistency": "Consistência de Hábitos",
+      "financialStability": "Estabilidade Financeira"
+    },
+    "todayFocus": {
+      "title": "Foco de Hoje",
+      "trackExpenses": "Acompanhe suas despesas",
+      "completeHabits": "Complete seus hábitos",
+      "writeJournal": "Escreva em seu diário",
+      "checkFinance": "Verifique suas finanças"
+    },
+    "quickActions": {
+      "title": "Ações Rápidas",
+      "addHabit": "Adicionar Hábito",
+      "writeJournal": "Escrever Diário",
+      "trackFinance": "Acompanhar Finanças",
+      "chatAI": "Conversar com NeNo"
+    },
+    "dailyQuote": {
+      "label": "Citação do Dia",
+      "africanProverb": "Provérbio Africano"
+    },
+    "points": {
+      "title": "Progresso da Sua Jornada",
+      "points": "Pontos",
+      "level": "Nível",
+      "toLevel": "pontos para Nível",
+      "readyFor": "Pronto para Nível"
+    },
+    "achievements": {
+      "title": "Conquistas Recentes"
+    }
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "close": "Fechar"
+  },
+  "navigation": {
+    "home": "Início",
+    "journal": "Diário",
+    "ai": "IA",
+    "habits": "Hábitos",
+    "finance": "Finanças",
+    "profile": "Perfil"
+  }
+}

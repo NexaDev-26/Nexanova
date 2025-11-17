@@ -1,0 +1,68 @@
+{
+  "dashboard": {
+    "greeting": {
+      "goodMorning": "Habari za asubuhi",
+      "goodAfternoon": "Habari za mchana",
+      "goodEvening": "Habari za jioni",
+      "friend": "Rafiki"
+    },
+    "quote": "Kila hatua mbele ni muhimu.",
+    "mood": {
+      "title": "Unajisikiaje leo?",
+      "label": "Hali",
+      "feeling": "Hali"
+    },
+    "progress": {
+      "title": "Maendeleo Yako",
+      "mindBalance": "Usawa wa Akili",
+      "habitConsistency": "Uthabiti wa Tabia",
+      "financialStability": "Ustahimilivu wa Kifedha"
+    },
+    "todayFocus": {
+      "title": "Lengo la Leo",
+      "trackExpenses": "Fuatilia matumizi yako",
+      "completeHabits": "Kamilisha tabia zako",
+      "writeJournal": "Andika katika dairi yako",
+      "checkFinance": "Angalia fedha zako"
+    },
+    "quickActions": {
+      "title": "Vitendo vya Haraka",
+      "addHabit": "Ongeza Tabia",
+      "writeJournal": "Andika Dairi",
+      "trackFinance": "Fuatilia Fedha",
+      "chatAI": "Zungumza na NeNo"
+    },
+    "dailyQuote": {
+      "label": "Nukuu ya Kila Siku",
+      "africanProverb": "Methali ya Kiafrika"
+    },
+    "points": {
+      "title": "Maendeleo ya Safari Yako",
+      "points": "Alama",
+      "level": "Kiwango",
+      "toLevel": "alama hadi Kiwango",
+      "readyFor": "Tayari kwa Kiwango"
+    },
+    "achievements": {
+      "title": "Mafanikio ya Hivi Karibuni"
+    }
+  },
+  "common": {
+    "loading": "Inapakia...",
+    "error": "Hitilafu",
+    "success": "Mafanikio",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "delete": "Futa",
+    "edit": "Hariri",
+    "close": "Funga"
+  },
+  "navigation": {
+    "home": "Nyumbani",
+    "journal": "Dairi",
+    "ai": "AI",
+    "habits": "Tabia",
+    "finance": "Fedha",
+    "profile": "Wasifu"
+  }
+}

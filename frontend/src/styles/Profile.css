@@ -1,0 +1,275 @@
+.profile {
+  padding-bottom: 5rem;
+}
+
+.profile-header {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%);
+  color: white;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 1rem;
+  font-weight: 700;
+}
+
+.profile-header h2 {
+  margin-bottom: 0.5rem;
+}
+
+.user-email {
+  opacity: 0.9;
+  font-size: 0.875rem;
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  background: var(--bg-card);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.info-value {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.rewards-section {
+  margin-bottom: 2rem;
+}
+
+.rewards-section h3 {
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.reward-badge {
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--gold);
+}
+
+.badge-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.badge-date {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.settings-list {
+  background: var(--bg-card);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item-toggle {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.setting-item-toggle:hover {
+  background-color: var(--bg);
+}
+
+.setting-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.setting-label-wrapper span:first-child {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.setting-description {
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.theme-toggle-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.theme-icon-inline {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.theme-label-inline {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.setting-value {
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.setting-select {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.875rem;
+  cursor: pointer;
+  min-width: 200px;
+  transition: border-color 0.2s ease;
+}
+
+.setting-select:hover {
+  border-color: var(--primary);
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-small:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.btn-small:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.qr-link-section {
+  margin-bottom: 1.5rem;
+}
+
+.qr-link-btn {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.logout-btn {
+  width: 100%;
+  background: #ef4444;
+  color: white;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-info {
+    grid-template-columns: 1fr;
+  }
+
+  .rewards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .info-card {
+    padding: 0.75rem;
+  }
+}
+

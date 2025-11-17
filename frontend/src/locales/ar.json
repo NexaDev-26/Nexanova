@@ -1,0 +1,68 @@
+{
+  "dashboard": {
+    "greeting": {
+      "goodMorning": "صباح الخير",
+      "goodAfternoon": "مساء الخير",
+      "goodEvening": "مساء الخير",
+      "friend": "صديق"
+    },
+    "quote": "كل خطوة إلى الأمام مهمة.",
+    "mood": {
+      "title": "كيف تشعر اليوم؟",
+      "label": "المزاج",
+      "feeling": "الشعور"
+    },
+    "progress": {
+      "title": "تقدمك",
+      "mindBalance": "توازن العقل",
+      "habitConsistency": "اتساق العادات",
+      "financialStability": "الاستقرار المالي"
+    },
+    "todayFocus": {
+      "title": "تركيز اليوم",
+      "trackExpenses": "تتبع نفقاتك",
+      "completeHabits": "أكمل عاداتك",
+      "writeJournal": "اكتب في مذكراتك",
+      "checkFinance": "تحقق من أموالك"
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "addHabit": "إضافة عادة",
+      "writeJournal": "كتابة مذكرات",
+      "trackFinance": "تتبع المالية",
+      "chatAI": "الدردشة مع NeNo"
+    },
+    "dailyQuote": {
+      "label": "اقتباس اليوم",
+      "africanProverb": "مثل أفريقي"
+    },
+    "points": {
+      "title": "تقدم رحلتك",
+      "points": "نقاط",
+      "level": "المستوى",
+      "toLevel": "نقطة إلى المستوى",
+      "readyFor": "جاهز للمستوى"
+    },
+    "achievements": {
+      "title": "الإنجازات الأخيرة"
+    }
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "journal": "المذكرات",
+    "ai": "الذكاء الاصطناعي",
+    "habits": "العادات",
+    "finance": "المالية",
+    "profile": "الملف الشخصي"
+  }
+}

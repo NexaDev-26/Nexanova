@@ -1,0 +1,72 @@
+.animated-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--nexa-blue), var(--nova-purple));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.animated-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--nexa-blue);
+}
+
+.animated-card-hover:hover::before {
+  transform: scaleX(1);
+}
+
+.animated-card-glow {
+  box-shadow: var(--shadow-soft);
+}
+
+.animated-card-glow:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+.animated-card-gradient {
+  background: linear-gradient(135deg, rgba(58, 123, 255, 0.05) 0%, rgba(138, 92, 255, 0.05) 100%);
+  border-color: rgba(58, 123, 255, 0.2);
+}
+
+.animated-card[role="button"] {
+  cursor: pointer;
+}
+
+.animated-card[role="button"]:focus {
+  outline: 2px solid var(--nexa-blue);
+  outline-offset: 2px;
+}
+
+/* Smooth entrance animation */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated-card {
+  animation: cardFadeIn 0.5s ease-out;
+}
+

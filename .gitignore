@@ -1,0 +1,9 @@
+node_modules/
+frontend/node_modules/
+backend/data/*.db
+.env
+.DS_Store
+*.log
+frontend/build/
+frontend/.pwa/
+

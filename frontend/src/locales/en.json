@@ -1,0 +1,68 @@
+{
+  "dashboard": {
+    "greeting": {
+      "goodMorning": "Good morning",
+      "goodAfternoon": "Good afternoon",
+      "goodEvening": "Good evening",
+      "friend": "Friend"
+    },
+    "quote": "Every step forward counts.",
+    "mood": {
+      "title": "How are you feeling today?",
+      "label": "Mood",
+      "feeling": "Feeling"
+    },
+    "progress": {
+      "title": "Your Progress",
+      "mindBalance": "Mind Balance",
+      "habitConsistency": "Habit Consistency",
+      "financialStability": "Financial Stability"
+    },
+    "todayFocus": {
+      "title": "Today's Focus",
+      "trackExpenses": "Track your expenses",
+      "completeHabits": "Complete your habits",
+      "writeJournal": "Write in your journal",
+      "checkFinance": "Check your finances"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "addHabit": "Add Habit",
+      "writeJournal": "Write Journal",
+      "trackFinance": "Track Finance",
+      "chatAI": "Chat with NeNo"
+    },
+    "dailyQuote": {
+      "label": "Daily Quote",
+      "africanProverb": "African Proverb"
+    },
+    "points": {
+      "title": "Your Journey Progress",
+      "points": "Points",
+      "level": "Level",
+      "toLevel": "points to Level",
+      "readyFor": "Ready for Level"
+    },
+    "achievements": {
+      "title": "Recent Achievements"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  },
+  "navigation": {
+    "home": "Home",
+    "journal": "Journal",
+    "ai": "AI",
+    "habits": "Habits",
+    "finance": "Finance",
+    "profile": "Profile"
+  }
+}
