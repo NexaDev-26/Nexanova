@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 
-// Path for SQLite DB
+// Database path
 const dbPath = path.join(__dirname, '../data/nexanova.db');
 const dataDir = path.dirname(dbPath);
 
@@ -12,6 +12,7 @@ if (!fs.existsSync(dataDir)) {
   console.log('✅ Created data directory:', dataDir);
 }
 
+// Connect to SQLite
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('❌ Error connecting to database:', err);
@@ -21,10 +22,13 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// ----------- DATABASE INITIALIZATION -----------
-const initDatabase = () => {
+// ============================
+// 🔥 DATABASE INITIALIZATION
+// ============================
+const initDatabase = async () => {
+  console.log("🚀 Initializing SQLite database...");
 
-  // USERS
+  // USERS TABLE
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -94,7 +98,7 @@ const initDatabase = () => {
     )
   `);
 
-  // JOURNAL ENTRIES (HABITS)
+  // HABIT JOURNAL ENTRIES
   db.run(`
     CREATE TABLE IF NOT EXISTS habit_journal_entries (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -106,170 +110,4 @@ const initDatabase = () => {
       trigger TEXT,
       challenges_faced TEXT,
       successes TEXT,
-      lessons_learned TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
-    )
-  `);
-
-  // STREAK HISTORY
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habit_streaks_history (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      habit_id INTEGER NOT NULL,
-      streak_value INTEGER NOT NULL,
-      start_date TEXT NOT NULL,
-      end_date TEXT,
-      is_active INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
-    )
-  `);
-
-  // CHALLENGES
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habit_challenges (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      challenge_type TEXT,
-      challenge_name TEXT NOT NULL,
-      description TEXT,
-      start_date TEXT NOT NULL,
-      end_date TEXT,
-      target_habits TEXT,
-      target_streak INTEGER DEFAULT 30,
-      current_progress INTEGER DEFAULT 0,
-      is_completed INTEGER DEFAULT 0,
-      badge_earned INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      completed_at TEXT,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    )
-  `);
-
-  // HABIT TEMPLATES
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habit_templates (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      title TEXT NOT NULL,
-      category TEXT,
-      difficulty TEXT DEFAULT 'easy',
-      frequency TEXT DEFAULT 'daily',
-      description TEXT,
-      trigger TEXT,
-      replacement TEXT,
-      is_public INTEGER DEFAULT 0,
-      usage_count INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    )
-  `);
-
-  // ANALYTICS
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habit_analytics (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      habit_id INTEGER NOT NULL,
-      date TEXT NOT NULL,
-      completion_rate REAL DEFAULT 0,
-      average_mood REAL,
-      completion_count INTEGER DEFAULT 0,
-      streak_value INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE(habit_id, date),
-      FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
-    )
-  `);
-
-  // REMINDERS
-  db.run(`
-    CREATE TABLE IF NOT EXISTS habit_reminders (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      habit_id INTEGER NOT NULL,
-      reminder_time TEXT NOT NULL,
-      days_of_week TEXT,
-      is_enabled INTEGER DEFAULT 1,
-      notification_type TEXT DEFAULT 'push',
-      last_sent TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
-    )
-  `);
-
-  // FINANCE
-  db.run(`
-    CREATE TABLE IF NOT EXISTS finance (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      type TEXT,
-      category TEXT,
-      amount REAL,
-      date TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // AI CHATS
-  db.run(`
-    CREATE TABLE IF NOT EXISTS ai_chats (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      message TEXT,
-      response TEXT,
-      mood_score INTEGER,
-      path_context TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // REWARDS
-  db.run(`
-    CREATE TABLE IF NOT EXISTS rewards (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      type TEXT,
-      title TEXT,
-      description TEXT,
-      awarded_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // BLUEPRINTS
-  db.run(`
-    CREATE TABLE IF NOT EXISTS journey_blueprints (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      path TEXT,
-      ai_personality TEXT,
-      plan_data TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // JOURNAL
-  db.run(`
-    CREATE TABLE IF NOT EXISTS journal_entries (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      title TEXT,
-      content TEXT,
-      mood INTEGER DEFAULT 5,
-      tags TEXT,
-      date TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  console.log("✅ Database setup completed.");
-};
-
-module.exports = { db, initDatabase };
+      les
