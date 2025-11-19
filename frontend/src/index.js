@@ -3,60 +3,54 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-// Only log in development
-if (process.env.NODE_ENV === 'development') {
-  console.log('🚀 NexaNova: Starting app...');
+// Only log in development to avoid noise in production
+if (import.meta.env.MODE === 'development') {
+  console.log('🚀 NexaNova: Starting frontend...');
 }
 
 const rootElement = document.getElementById('root');
+
 if (!rootElement) {
-  console.error('❌ Root element not found!');
+  console.error('❌ Root element #root NOT FOUND');
 } else {
   const root = ReactDOM.createRoot(rootElement);
-  
+
   try {
     root.render(
       <React.StrictMode>
         <App />
       </React.StrictMode>
     );
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ App rendered successfully');
+
+    if (import.meta.env.MODE === 'development') {
+      console.log('✅ App rendered successfully.');
     }
   } catch (error) {
-    console.error('❌ Error rendering app:', error);
+    console.error('❌ App rendering failed:', error);
+
     rootElement.innerHTML = `
-      <div style="padding: 2rem; text-align: center;">
-        <h1>Error Loading App</h1>
+      <div style="padding: 2rem; text-align: center; font-family: sans-serif;">
+        <h1 style="color:#d00;">App Failed to Load</h1>
         <p>${error.message}</p>
-        <button onclick="window.location.reload()">Reload</button>
+        <button onclick="window.location.reload()" 
+                style="padding: .5rem 1rem; margin-top: 1rem; cursor:pointer;">
+          Reload Page
+        </button>
       </div>
     `;
   }
 }
 
-// Additional service worker cleanup (redundant safety check)
-// Note: Service worker is already disabled in index.html before React loads
-if ('serviceWorker' in navigator && process.env.NODE_ENV === 'development') {
-  // Double-check: unregister any remaining service workers
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    if (registrations.length > 0) {
-      // Silent cleanup in development
-      registrations.forEach((registration) => {
-        registration.unregister();
-      });
-    }
+// 🔥 Disable ALL service workers (prevents offline bugs)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((regs) => {
+    for (const reg of regs) reg.unregister();
   });
-  
-  // Clear any remaining caches
+
+  // Clear caches to prevent stale asset issues
   if ('caches' in window) {
-    caches.keys().then((cacheNames) => {
-      if (cacheNames.length > 0) {
-        cacheNames.forEach((cacheName) => {
-          caches.delete(cacheName);
-        });
-      }
+    caches.keys().then((keys) => {
+      keys.forEach((key) => caches.delete(key));
     });
   }
 }
-
