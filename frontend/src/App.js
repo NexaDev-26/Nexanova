@@ -11,7 +11,7 @@ import FloatingAIChat from './components/FloatingAIChat';
 import './App.css';
 import './styles/Toast.css';
 
-// Lazy-loaded pages
+// Lazy load pages
 const Onboarding = lazy(() => import('./pages/Onboarding'));
 const Login = lazy(() => import('./pages/Login'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
@@ -23,14 +23,14 @@ const Journal = lazy(() => import('./pages/Journal'));
 const Profile = lazy(() => import('./pages/Profile'));
 const QRCode = lazy(() => import('./pages/QRCode'));
 
-// Protected route component
+// Protected route
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return <LoadingSpinner size="large" text="Loading your journey..." />;
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
-// Public route component
+// Public route
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return <LoadingSpinner size="large" />;
@@ -42,7 +42,6 @@ function AppRoutes() {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  // Detect online/offline status
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -59,14 +58,8 @@ function AppRoutes() {
 
   return (
     <div className={`App ${showHeaderAndAI ? 'app-with-header' : ''}`}>
-      {!isOnline && (
-        <div className="offline-banner">
-          📡 You're offline. Your data will sync when you're back online.
-        </div>
-      )}
-
+      {!isOnline && <div className="offline-banner">📡 You're offline. Your data will sync when you're back online.</div>}
       {showHeaderAndAI && <Header />}
-
       <Suspense fallback={<LoadingSpinner size="large" text="Loading page..." />}>
         <Routes>
           <Route path="/onboarding" element={<PublicRoute><Onboarding /></PublicRoute>} />
@@ -82,7 +75,6 @@ function AppRoutes() {
           <Route path="/" element={<Navigate to="/onboarding" replace />} />
         </Routes>
       </Suspense>
-
       {showHeaderAndAI && <FloatingAIChat />}
     </div>
   );
