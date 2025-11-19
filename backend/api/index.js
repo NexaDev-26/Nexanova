@@ -1,167 +1,155 @@
 /**
- * Vercel Serverless Function Entry Point
- * This file serves as the main handler for all API requests in Vercel
+ * NexaNova Backend – Render Deployment Version
+ * Clean, stable, simplified & production-safe
  */
 
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+require("dotenv").config();
 
 const app = express();
 
-// Enhanced CORS configuration for Vercel deployment
+/* ------------------------------
+   CORS CONFIG (Render Friendly)
+--------------------------------*/
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://nexanova.vercel.app",
+  /\.vercel\.app$/,
+  /\.onrender\.com$/,
+];
+
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    // Allow all origins in development
-    if (process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-    
-    // In production, allow frontend Vercel deployment and localhost for testing
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5000',
-      'https://nexanova.vercel.app',
-      /\.vercel\.app$/  // Allow all Vercel preview deployments
-    ];
-    
-    let isAllowed = false;
-    for (const allowed of allowedOrigins) {
-      if (allowed instanceof RegExp) {
-        if (allowed.test(origin)) {
-          isAllowed = true;
-          break;
-        }
-      } else if (allowed === origin) {
-        isAllowed = true;
-        break;
-      }
-    }
-    
-    if (isAllowed) {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // mobile apps & curl
+
+    const allowed = allowedOrigins.some((rule) =>
+      rule instanceof RegExp ? rule.test(origin) : rule === origin
+    );
+
+    if (allowed) {
       callback(null, true);
     } else {
-      callback(new Error('CORS not allowed'), false);
+      console.log("❌ Blocked by CORS:", origin);
+      callback(new Error("CORS not allowed"), false);
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Authorization']
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 };
 
-// Middleware
 app.use(cors(corsOptions));
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-// Security headers middleware
+/* ------------------------------
+   EXPRESS MIDDLEWARE
+--------------------------------*/
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+/* ------------------------------
+   SECURITY HEADERS
+--------------------------------*/
 app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.removeHeader('X-Powered-By');
-  
-  if (process.env.NODE_ENV === 'production') {
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';");
-  }
-  
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.removeHeader("X-Powered-By");
   next();
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'NexaNova API is running', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
+/* ------------------------------
+   HEALTH CHECK
+--------------------------------*/
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "NexaNova Backend is running 👑",
+    time: new Date().toISOString(),
   });
 });
 
-// Database initialization (SQLite or fallback)
-let db;
+/* ------------------------------
+   DATABASE INIT (SQLite/MySQL)
+--------------------------------*/
+let db = null;
 try {
-  db = require('../config/database');
-  console.log('✅ Database module loaded');
-} catch (error) {
-  console.warn('⚠️ Database error:', error.message);
-  console.warn('   Using in-memory storage fallback');
+  db = require("./config/database");
+  console.log("✅ Database loaded successfully");
+} catch (err) {
+  console.log("❌ Failed to load database:", err.message);
 }
 
-// Supabase initialization
-let supabase;
+/* ------------------------------
+   SUPABASE INIT
+--------------------------------*/
+let supabase = null;
 try {
-  const supabaseConfig = require('../config/supabase');
-  supabase = supabaseConfig.supabase;
-  if (supabase) {
-    console.log('✅ Supabase client initialized');
-  } else {
-    console.warn('⚠️ Supabase not available - using fallback');
-  }
-} catch (error) {
-  console.warn('⚠️ Supabase initialization failed:', error.message);
+  const sb = require("./config/supabase");
+  supabase = sb.supabase;
+  console.log("✅ Supabase client initialized");
+} catch (err) {
+  console.log("❌ Supabase failed to initialize:", err.message);
 }
 
-// Load API routes
-const loadRoutes = () => {
-  const routes = [
-    { path: '/auth', module: '../routes/auth', name: 'Auth' },
-    { path: '/password-reset', module: '../routes/passwordReset', name: 'PasswordReset' },
-    { path: '/habits', module: '../routes/habits', name: 'Habits' },
-    { path: '/finance', module: '../routes/finance', name: 'Finance' },
-    { path: '/chat', module: '../routes/chat', name: 'Chat' },
-    { path: '/rewards', module: '../routes/rewards', name: 'Rewards' },
-    { path: '/user', module: '../routes/user', name: 'User' },
-    { path: '/journal', module: '../routes/journal', name: 'Journal' }
-  ];
+/* ------------------------------
+   ROUTES LOADING
+--------------------------------*/
+const routeList = [
+  { path: "/auth", file: "./routes/auth" },
+  { path: "/password-reset", file: "./routes/passwordReset" },
+  { path: "/habits", file: "./routes/habits" },
+  { path: "/finance", file: "./routes/finance" },
+  { path: "/chat", file: "./routes/chat" },
+  { path: "/rewards", file: "./routes/rewards" },
+  { path: "/user", file: "./routes/user" },
+  { path: "/journal", file: "./routes/journal" },
+];
 
-  // Development routes
-  if (process.env.NODE_ENV === 'development') {
-    routes.push({ path: '/dev', module: '../routes/dev', name: 'Dev' });
+routeList.forEach((route) => {
+  try {
+    const router = require(route.file);
+    app.use(route.path, router);
+    console.log(`✅ Route loaded → ${route.path}`);
+  } catch (err) {
+    console.log(`❌ Failed to load route ${route.path}:`, err.message);
   }
+});
 
-  routes.forEach(route => {
-    try {
-      const router = require(route.module);
-      if (router && typeof router === 'function') {
-        app.use(route.path, router);
-        console.log(`✅ ${route.name} routes loaded at ${route.path}`);
-      } else {
-        console.error(`❌ ${route.name} router is not a function`);
-      }
-    } catch (error) {
-      console.error(`❌ Error loading ${route.name} routes:`, error.message);
-    }
-  });
-};
-
-loadRoutes();
-
-// 404 handler
+/* ------------------------------
+   404 HANDLER
+--------------------------------*/
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: `Endpoint ${req.method} ${req.path} not found`
+    message: `Endpoint ${req.method} ${req.path} not found`,
   });
 });
 
-// Error handler
+/* ------------------------------
+   ERROR HANDLER
+--------------------------------*/
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.message);
-  
-  res.status(err.status || 500).json({
+  console.error("❌ ERROR:", err.message);
+
+  res.status(500).json({
     success: false,
-    message: err.message || 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-    timestamp: new Date().toISOString()
+    error: err.message,
   });
 });
 
-// Export for Vercel serverless
+/* ------------------------------
+   START SERVER (Render)
+--------------------------------*/
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 NexaNova Backend running on port ${PORT}`);
+});
+
 module.exports = app;
