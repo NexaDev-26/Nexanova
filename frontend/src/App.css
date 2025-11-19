@@ -1,75 +1,19 @@
-/* App.css - NexaNova Frontend */
-
-/* General App Styles */
 .App {
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f9f9f9;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-/* Header and Main Content */
-.app-with-header {
-  padding-top: 70px; /* adjust according to header height */
-}
-
-/* Offline Banner */
-.offline-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ffcccc;
-  color: #900;
-  text-align: center;
-  padding: 8px 0;
-  font-weight: bold;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Loading Spinner Container */
-.loading-spinner-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
+  flex-direction: column;
 }
 
-/* Floating AI Chat Styles */
-.floating-ai-chat {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
+.app-with-header {
+  padding-top: 60px; /* leave space for header */
 }
 
-/* Toast Notifications */
-.toast {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  background-color: #333;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  z-index: 1001;
-}
-
-/* Pages spacing */
-.page-container {
-  padding: 20px;
-}
-
-/* Forms */
-input, button, select, textarea {
-  font-family: inherit;
-  font-size: 1rem;
-}
-
-button {
-  cursor: pointer;
+.offline-banner {
+  background-color: #ffcc00;
+  color: #333;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
 }
