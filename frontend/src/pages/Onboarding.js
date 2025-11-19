@@ -3,6 +3,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import '../styles/Onboarding.css';
+import React from 'react';
+const Onboarding = () => <div style={{ padding: 20 }}>Welcome to NexaNova Onboarding</div>;
+export default Onboarding;
+
 
 // Password strength checker
 const checkPasswordStrength = (password) => {
