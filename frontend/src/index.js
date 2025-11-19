@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-// Only log in development to avoid noise in production
-if (import.meta.env.MODE === 'development') {
+// Log startup info only in development
+if (process.env.NODE_ENV === 'development') {
   console.log('🚀 NexaNova: Starting frontend...');
 }
 
@@ -22,18 +22,18 @@ if (!rootElement) {
       </React.StrictMode>
     );
 
-    if (import.meta.env.MODE === 'development') {
+    if (process.env.NODE_ENV === 'development') {
       console.log('✅ App rendered successfully.');
     }
   } catch (error) {
     console.error('❌ App rendering failed:', error);
 
     rootElement.innerHTML = `
-      <div style="padding: 2rem; text-align: center; font-family: sans-serif;">
+      <div style="padding:2rem; text-align:center; font-family:sans-serif;">
         <h1 style="color:#d00;">App Failed to Load</h1>
         <p>${error.message}</p>
         <button onclick="window.location.reload()" 
-                style="padding: .5rem 1rem; margin-top: 1rem; cursor:pointer;">
+                style="padding:.5rem 1rem; margin-top:1rem; cursor:pointer;">
           Reload Page
         </button>
       </div>
@@ -41,16 +41,16 @@ if (!rootElement) {
   }
 }
 
-// 🔥 Disable ALL service workers (prevents offline bugs)
+// 🔥 Disable all service workers (avoid offline bugs)
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then((regs) => {
-    for (const reg of regs) reg.unregister();
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((reg) => reg.unregister());
   });
+}
 
-  // Clear caches to prevent stale asset issues
-  if ('caches' in window) {
-    caches.keys().then((keys) => {
-      keys.forEach((key) => caches.delete(key));
-    });
-  }
+// Clear all caches to prevent stale asset issues
+if ('caches' in window) {
+  caches.keys().then((keys) => {
+    keys.forEach((key) => caches.delete(key));
+  });
 }
