@@ -1,11 +1,31 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../utils/api';
 
-api.post('/api/auth/register', userData)
-
 const ThemeContext = createContext();
+
 export const useTheme = () => useContext(ThemeContext);
+
 export const ThemeProvider = ({ children }) => {
-  const [theme] = useState('light');
-  return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>;
+  const [theme, setTheme] = useState('light');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get('/theme')
+      .then(res => {
+        if (res.data?.theme) setTheme(res.data.theme);
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    // Optional: update theme to server here
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme, loading }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };
