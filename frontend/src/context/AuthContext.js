@@ -13,14 +13,11 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       api.defaults.headers.common.Authorization = `Bearer ${token}`;
-      // Fetch user profile if token exists
       api.get('/auth/profile')
         .then(res => {
           if (res.data.success) setUser(res.data.user);
         })
-        .catch(err => {
-          console.error(err);
-        })
+        .catch(err => console.error(err))
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
