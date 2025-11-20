@@ -14,11 +14,11 @@ const PORT = process.env.PORT || 5000;
 /* ---------- CORS ---------- */
 const allowed = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(',').map(s => s.trim())
-  : ['http://localhost:3000'];
+  : ['http://localhost:3000', 'https://nexanova.netlify.app'];
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow tools / mobile apps
+    if (!origin) return callback(null, true); 
     return callback(null, allowed.includes(origin));
   },
   credentials: true
@@ -45,13 +45,13 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ---------- Database (simple SQLite init) ---------- */
+/* ---------- Database ---------- */
 let db;
 try {
   db = require('./config/database').db;
   console.log('✅ Database ready');
 } catch (e) {
-  console.warn('⚠️ Database module not found or failed to init:', e.message);
+  console.warn('⚠️ Database module failed:', e.message);
 }
 
 /* ---------- Supabase (optional) ---------- */
@@ -59,11 +59,9 @@ let supabase;
 try {
   supabase = require('./config/supabase').supabase;
   console.log('✅ Supabase client ready');
-} catch (e) {
-  // optional
-}
+} catch (e) {}
 
-/* ---------- Routes loader (only loads existing files) ---------- */
+/* ---------- AUTO ROUTE LOADER ---------- */
 const routes = [
   ['/api/auth', './routes/auth'],
   ['/api/user', './routes/user']
@@ -79,26 +77,53 @@ routes.forEach(([routePath, modulePath]) => {
   }
 });
 
+/* ---------- Root Route (required for Render) ---------- */
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'NexaNova backend is running successfully!',
+    status: 'online',
+    timestamp: new Date().toISOString()
+  });
+});
+
 /* ---------- Healthcheck ---------- */
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'NexaNova API running', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    message: 'NexaNova API running', 
+    timestamp: new Date().toISOString() 
+  });
 });
 
-/* ---------- 404 & Error handlers ---------- */
+/* ---------- 404 Handler ---------- */
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: `Endpoint ${req.method} ${req.path} not found` });
+  res.status(404).json({ 
+    success: false, 
+    message: `Endpoint ${req.method} ${req.path} not found` 
+  });
 });
 
+/* ---------- Error Handler ---------- */
 app.use((err, req, res, next) => {
   console.error('ERROR:', err);
-  res.status(err.status || 500).json({ success: false, message: err.message || 'Server error' });
+  res.status(err.status || 500).json({ 
+    success: false, 
+    message: err.message || 'Server error' 
+  });
 });
 
-/* ---------- WebSocket (optional minimal) ---------- */
+/* ---------- WebSocket ---------- */
 const httpServer = http.createServer(app);
 const wss = new WebSocket.Server({ server: httpServer, path: '/ws' });
+
 wss.on('connection', (ws) => {
-  ws.send(JSON.stringify({ type: 'connected', message: 'ws active', timestamp: new Date().toISOString() }));
+  ws.send(JSON.stringify({ 
+    type: 'connected', 
+    message: 'WebSocket active', 
+    timestamp: new Date().toISOString() 
+  }));
+
   ws.on('message', (m) => {
     console.log('WS message:', m);
     ws.send(JSON.stringify({ type: 'ack', received: m }));
