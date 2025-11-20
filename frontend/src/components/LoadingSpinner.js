@@ -1,6 +1,11 @@
 import React from 'react';
 import '../styles/LoadingSpinner.css';
 
+export default function LoadingSpinner({ text = 'Loading...' }) {
+  return <div style={{ padding: 20, textAlign: 'center' }}>{text}</div>;
+}
+
+
 const LoadingSpinner = ({ size = 'medium', text = '' }) => {
   return (
     <div className="loading-spinner-container">
