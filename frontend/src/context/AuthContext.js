@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../utils/api';
 
+api.post('/api/auth/register', userData)
+
+
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
