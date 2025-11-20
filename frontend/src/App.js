@@ -11,7 +11,7 @@ import FloatingAIChat from './components/FloatingAIChat';
 import './App.css';
 import './styles/Toast.css';
 
-// Lazy load pages
+// Lazy load pages for code splitting
 const Onboarding = lazy(() => import('./pages/Onboarding'));
 const Login = lazy(() => import('./pages/Login'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
@@ -23,17 +23,25 @@ const Journal = lazy(() => import('./pages/Journal'));
 const Profile = lazy(() => import('./pages/Profile'));
 const QRCode = lazy(() => import('./pages/QRCode'));
 
-// Protected route
+// Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
-  if (loading) return <LoadingSpinner size="large" text="Loading your journey..." />;
+  
+  if (loading) {
+    return <LoadingSpinner size="large" text="Loading your journey..." />;
+  }
+  
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
-// Public route
+// Public Route Component (redirects to dashboard if already logged in)
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
-  if (loading) return <LoadingSpinner size="large" />;
+  
+  if (loading) {
+    return <LoadingSpinner size="large" />;
+  }
+  
   return !isAuthenticated ? children : <Navigate to="/dashboard" replace />;
 };
 
@@ -45,8 +53,10 @@ function AppRoutes() {
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
@@ -58,7 +68,11 @@ function AppRoutes() {
 
   return (
     <div className={`App ${showHeaderAndAI ? 'app-with-header' : ''}`}>
-      {!isOnline && <div className="offline-banner">📡 You're offline. Your data will sync when you're back online.</div>}
+      {!isOnline && (
+        <div className="offline-banner">
+          📡 You're offline. Your data will sync when you're back online.
+        </div>
+      )}
       {showHeaderAndAI && <Header />}
       <Suspense fallback={<LoadingSpinner size="large" text="Loading page..." />}>
         <Routes>
@@ -83,19 +97,20 @@ function AppRoutes() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <LocaleProvider>
-          <ToastProvider>
-            <AuthProvider>
-              <Router>
-                <AppRoutes />
-              </Router>
-            </AuthProvider>
-          </ToastProvider>
-        </LocaleProvider>
-      </ThemeProvider>
+    <ThemeProvider>
+      <LocaleProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </AuthProvider>
+        </ToastProvider>
+      </LocaleProvider>
+    </ThemeProvider>
     </ErrorBoundary>
   );
 }
 
 export default App;
+
