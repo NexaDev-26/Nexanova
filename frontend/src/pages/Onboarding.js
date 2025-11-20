@@ -38,7 +38,6 @@ const Onboarding = () => {
   const { register, isAuthenticated } = useAuth();
   const { showToast } = useToast();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) navigate('/dashboard');
   }, [isAuthenticated, navigate]);
@@ -93,7 +92,6 @@ const Onboarding = () => {
     setError('');
     setLoading(true);
 
-    // Validate required fields
     if (!formData.email || !formData.password || !formData.path || !formData.ai_personality) {
       setError('Please complete all required fields');
       setLoading(false);
@@ -139,11 +137,7 @@ const Onboarding = () => {
       setLoading(false);
       console.error('❌ Onboarding error:', error);
 
-      const networkErrors = [
-        'ECONNREFUSED',
-        'ERR_NETWORK',
-        'Network Error'
-      ];
+      const networkErrors = ['ECONNREFUSED', 'ERR_NETWORK', 'Network Error'];
 
       if (networkErrors.includes(error.code) || error.message?.includes('Network')) {
         const msg = 'Cannot connect to server. Check backend running, network, firewall, ports.';
@@ -177,3 +171,35 @@ const Onboarding = () => {
             <button onClick={() => setError('')}>✕</button>
           </div>
         )}
+
+        {/* Add your onboarding steps UI here */}
+        <div className="onboarding-step">
+          {/* Example Step */}
+          {step === 1 && (
+            <div>
+              <h2>Step 1: Create Account</h2>
+              <input
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => updateFormData('email', e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) => updateFormData('password', e.target.value)}
+              />
+              <button onClick={handleNext} disabled={loading}>
+                {loading ? 'Loading...' : 'Next'}
+              </button>
+            </div>
+          )}
+          {/* Add steps 2-4 similarly */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Onboarding;
