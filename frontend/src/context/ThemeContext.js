@@ -10,7 +10,7 @@ export const ThemeProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/theme')
+    api.get('https://nexanova-app-3mii.onrender.com/theme')
       .then(res => {
         if (res.data?.theme) setTheme(res.data.theme);
       })
