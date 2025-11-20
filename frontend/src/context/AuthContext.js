@@ -1,46 +1,44 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../utils/api';
 
 const AuthContext = createContext();
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in (example)
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // Optional: fetch user profile from backend
-      setUser({ name: 'Demo User' });
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      // optional: fetch profile
+      api.get('/user/profile').then(r => { if (r.data.success) setUser(r.data.user); }).catch(()=>{}).finally(()=>setLoading(false));
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
+  const register = async (data) => {
+    const res = await api.post('/auth/register', data);
+    return res.data;
+  };
+
   const login = async (email, password) => {
-    // Call backend login endpoint
-    const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user);
+    const res = await api.post('/auth/login', { email, password });
+    if (res.data.success) {
+      localStorage.setItem('token', res.data.token);
+      api.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
+      setUser(res.data.user);
+    }
+    return res.data;
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
+    delete api.defaults.headers.common.Authorization;
   };
 
-  const isAuthenticated = !!user;
-
-  return (
-    <AuthContext.Provider value={{ user, loading, isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, loading, isAuthenticated: !!user, register, login, logout }}>{children}</AuthContext.Provider>;
 };
