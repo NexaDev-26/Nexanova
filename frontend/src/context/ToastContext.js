@@ -1,4 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
+import api from '../utils/api';
+
+api.post('/api/auth/register', userData)
+
 const ToastContext = createContext();
 export const useToast = () => useContext(ToastContext);
 export const ToastProvider = ({ children }) => {
